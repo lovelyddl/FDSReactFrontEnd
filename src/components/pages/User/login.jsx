@@ -2,6 +2,8 @@ import React from 'react';
 import '../../../assets/css/login.scss'
 import { Link } from "react-router-dom";
 import { Dropdown } from "semantic-ui-react";
+import { addUser } from "../../../redux/actions"
+import { connect } from "react-redux";
 
 const loginMethods = [
   { key: 'userName', icon: 'user', text: 'User Name', value: 'userName' },
@@ -10,24 +12,37 @@ const loginMethods = [
 ]
 
 class LogIn extends React.Component {
-  state = {
-    data: {
-      loginMethod: "",
-      password: ""
-    },
-    loading: false,
-    errors: {}
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: {
+        userId: "",
+        password: ""
+      },
+      loading: false,
+      errors: {}
+    };
+  }
 
   // 同步改变输入和state中对应的属性
   // text using this one onChange method
-  onChange = e =>
+  onChange = e => {
     this.setState({
       // ...this.state.data : save all data exits
       // later : something we really want to change
       // e.target : contians all form information
-      data: { ...this.state.data, [e.target.name]: e.target.value }
-  });
+      data: { ...this.state.data, [e.target.name]: e.target.value } 
+    });
+  }
+
+
+  handleLog = () => {
+    this.props.addUser(this.state.data);
+    this.setState({ data: {
+      userId: "",
+      password: ""
+    }})
+  }
 
   render() {
     const { data } = this.state;
@@ -45,7 +60,7 @@ class LogIn extends React.Component {
                 <div className="field">
                   <div className="ui left input">
                     <Dropdown options={loginMethods} className="icon" button placeholder="Login Method"></Dropdown>
-                    <input value={data.loginMethod} type="text" name="loginMethod" onChange={this.onChange}/> 
+                    <input value={data.userId} type="text" name="userId" onChange={this.onChange}/> 
                   </div>
                 </div>
                 <div className="field">
@@ -54,7 +69,7 @@ class LogIn extends React.Component {
                     <input value={data.password} type="password" name="password" placeholder="Please input password" onChange={this.onChange}/> 
                   </div>
                 </div>
-                <div className="ui fluid large teal submit button">Login</div>
+                <div onClick={this.handleLog} className="ui fluid large teal submit button">Login</div>
               </div>
               <div className="ui error message"></div>
             </form>
@@ -67,4 +82,7 @@ class LogIn extends React.Component {
   }
 }
 
-export default LogIn
+export default connect(
+  null,
+  { addUser }
+)(LogIn);

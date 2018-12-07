@@ -32,10 +32,10 @@
       .search-input {
         float: right;
         margin-right: 10px;
-        width: 350px;
+        width: 20%;
       }
       .search-icon {
-        margin-right: 120px;
+        margin-right: 10%;
         margin-top: 10px;
         font-size: 18px;
         position: relative;
@@ -47,5 +47,8 @@
 }
 
 .main {
-  margin: 30px 150px 0 150px;
+  width: 70%;
+  margin-top: 30px;
+  margin-left: 15%;
+  margin-right: 15%;
 }
