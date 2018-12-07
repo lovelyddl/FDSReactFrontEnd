@@ -1,0 +1,14 @@
+.login-container {
+  margin-top: 100px;
+  .ui.button.dropdown.icon {
+    i.dropdown.icon::before {
+      margin-left: 10px;
+    }
+  }
+}
+body > .grid {
+  height: 100%;
+}
+.column {
+  max-width: 550px;
+}
