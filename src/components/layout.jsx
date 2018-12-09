@@ -8,32 +8,37 @@ import SignUp from '../components/pages/User/signup';
 import LogIn from '../components/pages/User/login';
 import PersonalSpace from '../components/pages/PersonalSpace/index';
 import { Dropdown } from 'semantic-ui-react'
+import { connect } from "react-redux";
+import { addUser } from "../redux/actions"
 
 class Layout extends React.Component {
-  state = {
-    searchOptions: [
-      {
-        key: "restName",
-        value: "restName",
-        text: 'restaurants name'
-      },
-      {
-        key: "restAddr",
-        value: "restAddr",
-        text: 'restaurants address'
-      },
-      {
-        key: "zipcode",
-        value: "zipcode",
-        text: 'city zipcode'
-      },
-      {
-        key: "restType",
-        value: "restType",
-        text: 'restaurants type'
-      }
-    ],
-    searchQuery: []
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchOptions: [
+        {
+          key: "restName",
+          value: "restName",
+          text: 'restaurants name'
+        },
+        {
+          key: "restAddr",
+          value: "restAddr",
+          text: 'restaurants address'
+        },
+        {
+          key: "zipcode",
+          value: "zipcode",
+          text: 'city zipcode'
+        },
+        {
+          key: "restType",
+          value: "restType",
+          text: 'restaurants type'
+        }
+      ],
+      searchQuery: []
+    }
   }
 
   handleChange = (val, text) => {
@@ -41,12 +46,26 @@ class Layout extends React.Component {
       searchQuery: text.value
     }, () => {
       // 此时调用的是及时更新后的state
-      console.log(this.state.searchQuery)
+      console.log(this.state.searchQuery);
     }) 
   }
 
+  logOut = () => {
+    this.props.addUser({
+      userId: "",
+      password: ""
+    });
+    this.props.history.push('/')
+  }
+
   render() {
-    const { searchOptions } = this.state
+    const { searchOptions } = this.state;
+    let log = null
+    if (this.props.userInfo.userId !== "" && this.props.userInfo.password !== "") {
+      log = <div onClick={this.logOut} className="item"><div className="ui button red">Log out</div></div>;
+    } else {
+      log = <div className="item"><Link to="/login" className="ui button">Log in</Link></div>
+    }
     return (
         <div className="layout-style">
           <div className="header">
@@ -57,9 +76,7 @@ class Layout extends React.Component {
               </div>
               </div>
               <div className="ui right menu inverted">
-                <div className="item">
-                  <Link to="/login" className="ui button">Log in</Link>
-                </div>
+                {log}
                 <div className="item">
                   <Link to="/signup" className="ui primary button">Sign Up</Link>
                 </div>
@@ -94,4 +111,8 @@ class Layout extends React.Component {
 
 }
 
-export default Layout;
+const mapStateToProps = (state) => {
+  return state.userInfo;
+}
+
+export default connect(mapStateToProps, {addUser})(Layout);

@@ -41,7 +41,8 @@ class LogIn extends React.Component {
     this.setState({ data: {
       userId: "",
       password: ""
-    }})
+    }});
+    this.props.history.push('/');
   }
 
   render() {
