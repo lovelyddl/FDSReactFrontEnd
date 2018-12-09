@@ -19,10 +19,10 @@ class Index extends React.Component {
         </div>
         <div class="ui message">
           <div class="header">网站新功能 </div>
-          <ul class="list">
+          <div class="ui list">
             <li>您现在可以在博客页拥有封面照片</li>
             <li>写作的时候可以自动保存草稿</li>
-          </ul>
+          </div>
         </div>
       </div>
     );
