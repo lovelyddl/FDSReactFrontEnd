@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Dropdown } from "semantic-ui-react";
 import { addUser } from "../../../redux/actions"
 import { connect } from "react-redux";
+import { userLogin } from "../../../api/user";
 
 const loginMethods = [
   { key: 'userName', icon: 'user', text: 'User Name', value: 'userName' },
@@ -37,11 +38,14 @@ class LogIn extends React.Component {
 
 
   handleLog = () => {
+    let res = userLogin(this.state.data.userId, this.state.data.password);
+    console.log(res.code)
     this.props.addUser(this.state.data);
     this.setState({ data: {
       userId: "",
       password: ""
     }});
+    
     this.props.history.push('/');
   }
 
@@ -82,6 +86,7 @@ class LogIn extends React.Component {
     );
   }
 }
+
 
 export default connect(
   null,
