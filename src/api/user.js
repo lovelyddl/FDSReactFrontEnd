@@ -7,10 +7,6 @@ export const userLogin = (userId, password) => {
       userId,
       password
     }
-  }).then(function (response) {
-
-  }).catch(function (error) {
-    console.log(error);
   })
 
 }
