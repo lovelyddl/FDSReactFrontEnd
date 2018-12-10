@@ -10,6 +10,7 @@ import PersonalSpace from '../components/pages/PersonalSpace/index';
 import { Dropdown } from 'semantic-ui-react'
 import { connect } from "react-redux";
 import { addUser } from "../redux/actions"
+import PropTypes from "prop-types";
 
 class Layout extends React.Component {
   constructor(props) {
@@ -61,7 +62,7 @@ class Layout extends React.Component {
   render() {
     const { searchOptions } = this.state;
     let log = null
-    if (this.props.userInfo.userId !== "" && this.props.userInfo.password !== "") {
+    if (this.props.userInfo !== undefined && this.props.userInfo.userId !== "" && this.props.userInfo.password !== "") {
       log = <div onClick={this.logOut} className="item"><div className="ui button red">Log out</div></div>;
     } else {
       log = <div className="item"><Link to="/login" className="ui button">Log in</Link></div>
@@ -110,6 +111,15 @@ class Layout extends React.Component {
   }
 
 }
+
+Layout.propTypes = {
+  userInfo: PropTypes.shape({
+    userId: PropTypes.string,
+    password: PropTypes.string
+  }),
+  addUser: PropTypes.func.isRequired
+}
+
 
 const mapStateToProps = (state) => {
   return state.userInfo;
