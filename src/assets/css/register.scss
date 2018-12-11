@@ -14,4 +14,14 @@
     }
   }
 
+  .errorBorder {
+    border: 1px solid red;
+  }
+
+  .errorMessage {
+    color: red;
+    font-size: 0.75em;
+    display: inline;
+  }
+
 }

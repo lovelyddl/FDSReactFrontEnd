@@ -31,7 +31,7 @@ class LogIn extends React.Component {
     this.setState({
       // ...this.state.data : save all data exits
       // later : something we really want to change
-      // e.target : contians all form information
+      // e.target : contains all form information
       data: { ...this.state.data, [e.target.name]: e.target.value } 
     });
   }
