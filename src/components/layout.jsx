@@ -11,6 +11,7 @@ import { Dropdown } from 'semantic-ui-react'
 import { connect } from "react-redux";
 import { addUser } from "../redux/actions"
 import PropTypes from "prop-types";
+import { checkLog, logout } from "../api/user";
 
 class Layout extends React.Component {
   constructor(props) {
@@ -42,6 +43,21 @@ class Layout extends React.Component {
     }
   }
 
+  componentDidMount() {
+    // refresh to check if log
+    let res = checkLog();
+    res.then((response) => {
+      let data = response.data
+      if (data.code === 1) {
+        console.log(data.error);
+      } else if (data.code === 0) {
+        this.props.addUser(data.userInfo);
+      }
+    }).catch(function (error) {
+      console.log(error)
+    })
+  }
+
   handleChange = (val, text) => {
     this.setState({
       searchQuery: text.value
@@ -52,6 +68,15 @@ class Layout extends React.Component {
   }
 
   logOut = () => {
+    let res = logout()
+    res.then((response) => {
+      let data = response.data
+      if (data.code === 0) {
+        console.log('log out successfully')
+      } 
+    }).catch(function (error) {
+      console.log('failed to log out')
+    })
     this.props.addUser({
       userId: "",
       password: ""

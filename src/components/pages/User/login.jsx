@@ -36,25 +36,27 @@ class LogIn extends React.Component {
     });
   }
 
-
   handleLog = () => {
     let res = userLogin(this.state.data.userId, this.state.data.password);
     res.then((response) => {
-      console.log(response.data.code)
       let data = response.data
-      if (data.code === 1) {
-        alert("Log in Successfully")
+      if (data.code === 0) {
+        alert("Log in Successfully!!")
         this.props.addUser(this.state.data);
         this.setState({ data: {
           userId: "",
           password: ""
         }});
         this.props.history.push('/');
-      } else {
-        alert("Please input correct username and password");
+      } else if (data.code === 1) {
+        alert(data.error);
+        this.setState({ data: {
+          userId: "",
+          password: ""
+        }});
       }
     }).catch(function (error) {
-      console.log(error);
+      alert("Database failed to connect");
     })
   }
 
