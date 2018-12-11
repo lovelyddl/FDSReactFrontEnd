@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
-    "babel-polyfill": "^6.26.0",
     "node-sass": "^4.10.0",
     "promise-polyfill": "^8.1.0",
     "prop-types": "^15.6.2",
@@ -32,8 +31,5 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
-  "devDependencies": {
-    "http-proxy-middleware": "^0.19.1"
-  }
+  ]
 }
