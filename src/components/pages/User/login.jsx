@@ -18,7 +18,8 @@ class LogIn extends React.Component {
     this.state = {
       data: {
         userId: "",
-        password: ""
+        password: "",
+        logType: ''
       },
       loading: false,
       errors: {}
@@ -33,30 +34,39 @@ class LogIn extends React.Component {
       // e.target : contains all form information
       data: { ...this.state.data, [e.target.name]: e.target.value }
     });
+   
+  }
+
+  onChangeLogMethod = (val, text) => {
+    this.setState({data: {  ...this.state.data, logType: text.value }}, () => { console.log(this.state.data.logType) })
   }
 
   handleLog = () => {
-    let res = userLogin(this.state.data.userId, this.state.data.password);
-    res.then((response) => {
-      let data = response.data
-      if (data.code === 0) {
-        alert("Log in Successfully!!")
-        this.props.addUser(this.state.data);
-        this.setState({ data: {
-          userId: "",
-          password: ""
-        }});
-        this.props.history.push('/');
-      } else if (data.code === 1) {
-        alert(data.error);
-        this.setState({ data: {
-          userId: "",
-          password: ""
-        }});
-      }
-    }).catch(function (error) {
-      alert("Database failed to connect");
-    })
+    if (this.state.data.logType === '') {
+      alert('Please select the login method')
+    } else {
+      let res = userLogin(this.state.data.userId, this.state.data.password, this.state.data.logType);
+      res.then((response) => {
+        let data = response.data
+        if (data.code === 0) {
+          alert("Log in Successfully!!")
+          this.props.addUser(this.state.data);
+          this.setState({ data: {
+            userId: "",
+            password: ""
+          }});
+          this.props.history.push('/');
+        } else if (data.code === 1) {
+          alert(data.error);
+          this.setState({ data: {
+            userId: "",
+            password: ""
+          }});
+        }
+      }).catch(function (error) {
+        alert("Database failed to connect");
+      })
+    }
   }
 
   render() {
@@ -74,7 +84,7 @@ class LogIn extends React.Component {
               <div className="ui stacked secondary  segment">
                 <div className="field">
                   <div className="ui left input">
-                    <Dropdown options={loginMethods} className="icon" button placeholder="Login Method"></Dropdown>
+                    <Dropdown value={data.logType} onChange={this.onChangeLogMethod} options={loginMethods} className="icon" button placeholder="Login Method"></Dropdown>
                     <input value={data.userId} type="text" name="userId" onChange={this.onChange}/> 
                   </div>
                 </div>
@@ -96,7 +106,6 @@ class LogIn extends React.Component {
     );
   }
 }
-
 
 export default connect(
   null,

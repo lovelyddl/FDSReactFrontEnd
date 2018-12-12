@@ -1,5 +1,5 @@
 import React from 'react'
-import '../../../assets/css/register.scss'
+import '../../../assets/css/signup.scss'
 import { Form, Button } from "semantic-ui-react";
 
 // const genderOptions = [
@@ -63,7 +63,7 @@ class SignUp extends React.Component {
     } else if (name === "password" && value.length < 8) {
       errorMessage = "minimum 8 characters required";
     }
-    if (errorMessage === "") {
+    if (errorMessage === "" && this.state.errors[name] === undefined) {
       let newErrors = this.state.errors;
       delete newErrors[name];
       this.setState({ errors: newErrors });
