@@ -13,15 +13,16 @@
       margin-top: 30px;
     }
   }
-
-  .errorBorder {
-    border: 1px solid red;
+  .ui.form {
+    .errorBorder {
+      border: 1px solid red;
+    }
   }
-
   .errorMessage {
     color: red;
-    font-size: 0.75em;
-    display: inline;
+    font-size: 15px;
   }
-
+  .hide {
+    display: none;
+  }
 }

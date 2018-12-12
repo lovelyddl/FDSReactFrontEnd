@@ -30,9 +30,8 @@ class LogIn extends React.Component {
   onChange = e => {
     this.setState({
       // ...this.state.data : save all data exits
-      // later : something we really want to change
       // e.target : contains all form information
-      data: { ...this.state.data, [e.target.name]: e.target.value } 
+      data: { ...this.state.data, [e.target.name]: e.target.value }
     });
   }
 
