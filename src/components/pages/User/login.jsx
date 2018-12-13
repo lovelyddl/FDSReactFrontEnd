@@ -34,11 +34,12 @@ class LogIn extends React.Component {
       // e.target : contains all form information
       data: { ...this.state.data, [e.target.name]: e.target.value }
     });
-   
   }
 
   onChangeLogMethod = (val, text) => {
-    this.setState({data: {  ...this.state.data, logType: text.value }}, () => { console.log(this.state.data.logType) })
+    this.setState({data: {  ...this.state.data, logType: text.value }} //, 
+      // () => { console.log(this.state.data.logType) }
+    )
   }
 
   handleLog = () => {

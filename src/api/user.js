@@ -22,3 +22,13 @@ export const logout = () => {
   let url = host + "/users/logout";
   return Axios.post(url)
 }
+
+export const signup = (userName, phone, email, password) => {
+  let url = host + "/users/signup";
+  return Axios.post(url, {
+    userName,
+    phone,
+    email,
+    password
+  })
+}

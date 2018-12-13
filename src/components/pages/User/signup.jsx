@@ -1,6 +1,7 @@
 import React from 'react'
 import '../../../assets/css/signup.scss'
 import { Form, Button } from "semantic-ui-react";
+import { signup } from "../../../api/user"
 
 // const genderOptions = [
 //   { key: 'm', text: 'Male', value: 'male' },
@@ -15,10 +16,6 @@ const phoneRegex = RegExp(
   /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/
 );
 
-const formValid = (state) => {
-  const { errors, data } = state;
-  return Object.keys(errors).length === 0 && Object.values(data).every(val => { return val !== ""; });
-}
 
 class SignUp extends React.Component {
   constructor(props){
@@ -28,23 +25,41 @@ class SignUp extends React.Component {
         userName: "",
         phone: "",
         email: "",
-        password: ""
+        password: "",
+        checked: false
       },
-      checked: false,
       errors: {}
     };
   }
 
+  formValid = () => {
+    const { errors, data } = this.state;
+    return Object.keys(errors).length === 0 && Object.values(data).every(val => { return val !== ""; }) && data.checked;
+  }
+
   handleSubmit = e => {
+    const { data } = this.state;
     e.preventDefault();
-    if (formValid(this.state)) {
-    console.log(`
-      Successfully Submitting:
-      User Name: ${this.state.data.userName}
-      Phone: ${this.state.data.phone}
-      Email: ${this.state.data.email}
-      Password: ${this.state.data.password}
-      `);
+    if (this.formValid()) {
+      let res = signup(data.userName, data.phone, data.email, data.password);
+      res.then((response) => {
+        let data = response.data
+        if (data.code === 0) {
+          console.log(`
+            Successfully Submitting:
+            User Name: ${data.userName}
+            Phone: ${data.phone}
+            Email: ${data.email}
+            Password: ${data.password}
+          `);
+          alert("Welcome to join us")
+          this.props.history.push('/');
+        } else if (data.code === 1) {
+          alert(data.error);
+        }
+      }).catch(function (error) {
+        alert("Database failed to connect");
+      })
     } else {
       console.log('Please enter correct required information');
     }
@@ -63,7 +78,7 @@ class SignUp extends React.Component {
     } else if (name === "password" && value.length < 8) {
       errorMessage = "minimum 8 characters required";
     }
-    if (errorMessage === "" && this.state.errors[name] === undefined) {
+    if (errorMessage === "") {
       let newErrors = this.state.errors;
       delete newErrors[name];
       this.setState({ errors: newErrors });
@@ -72,6 +87,10 @@ class SignUp extends React.Component {
     }
     this.setState({ data: { ...this.state.data, [name]: value }});
   };
+
+  onChangeCheckbox = (val, text) => {
+    this.setState({ data: { ...this.state.data, checked: text.checked }});
+  }
 
   render() {
     const { errors, data } = this.state;
@@ -122,7 +141,7 @@ class SignUp extends React.Component {
             placeholder="Make it secure"/>
           <span className={ errors.password ? "errorMessage" : "hide" }>{errors.password}</span>
         </Form.Field>
-        <Form.Checkbox required label='Join FDS. By joining I accept all terms and conditions.' />
+        <Form.Checkbox onChange={this.onChangeCheckbox} required label='Join FDS. By joining I accept all terms and conditions.' />
         <div className="submit-button">
           <Button primary type="submit">Join Us</Button>
         </div>
