@@ -1,13 +1,12 @@
 import React from 'react';
 import '../assets/css/layout.scss';
 import { Route, Link } from "react-router-dom";
-import Index from '../components/pages/index';
+import Home from './pages/home';
 import About from '../components/pages/about';
-import Blackboard from '../components/pages/blackboard';
+import Blackboard from './pages/PersonalSpace/blackboard';
 import SignUp from '../components/pages/User/signup';
 import LogIn from '../components/pages/User/login';
-import PersonalSpace from '../components/pages/PersonalSpace/index';
-import { Dropdown } from 'semantic-ui-react'
+import Profile from './pages/PersonalSpace/profile';
 import { connect } from "react-redux";
 import { addUser } from "../redux/actions"
 import PropTypes from "prop-types";
@@ -17,29 +16,7 @@ class Layout extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchOptions: [
-        {
-          key: "restName",
-          value: "restName",
-          text: 'restaurants name'
-        },
-        {
-          key: "restAddr",
-          value: "restAddr",
-          text: 'restaurants address'
-        },
-        {
-          key: "zipcode",
-          value: "zipcode",
-          text: 'city zipcode'
-        },
-        {
-          key: "restType",
-          value: "restType",
-          text: 'restaurants type'
-        }
-      ],
-      searchQuery: []
+      //searchQuery: []
     }
   }
 
@@ -58,14 +35,14 @@ class Layout extends React.Component {
     })
   }
 
-  handleChange = (val, text) => {
-    this.setState({
-      searchQuery: text.value
-    }, () => {
-      // 此时调用的是及时更新后的state
-      console.log(this.state.searchQuery);
-    }) 
-  }
+  // handleChange = (val, text) => {
+  //   this.setState({
+  //     searchQuery: text.value
+  //   }, () => {
+  //     // 此时调用的是及时更新后的state
+  //     console.log(this.state.searchQuery);
+  //   })
+  // }
 
   logOut = () => {
     let res = logout()
@@ -85,7 +62,6 @@ class Layout extends React.Component {
   }
 
   render() {
-    const { searchOptions } = this.state;
     let log = null
     if (this.props.userInfo !== undefined && this.props.userInfo.userId !== "" && this.props.userInfo.password !== "") {
       log = <div onClick={this.logOut} className="item"><div className="ui button red">Log out</div></div>;
@@ -96,11 +72,17 @@ class Layout extends React.Component {
         <div className="layout-style">
           <div className="header">
             <div className="ui menu inverted">
+                {/*如果在这上面的classname里加fixed的话，header能fixed，但每一页下面的内容都会往上窜*/}
               <div className="ui left menu  inverted select-menu">
               <div className="item title-word">
-                Food Delivery System
+                <Link to="/">Food Delivery System</Link>
               </div>
               </div>
+                <div className="container select-menu">
+                    <Link to="/about" className="item">About Us</Link>
+                    <Link to="/blackboard" className="item">Blackboard</Link>
+                    <Link to="/Profile" className="item">Profile</Link>
+                </div>
               <div className="ui right menu inverted">
                 {log}
                 <div className="item">
@@ -109,27 +91,23 @@ class Layout extends React.Component {
               </div>
             </div>    
           </div>
-          <div className="sub-header">
-            <div className="ui menu">
-              <div className="container select-menu">
-                <Link to="/" className="item">Home</Link>
-                <Link to="/about" className="item">About Us</Link>
-                <Link to="/blackboard" className="item">Blackboard</Link>
-                <Link to="/personalSpace" className="item">Your Space</Link>
-              </div>
-              <div className="search-col">
-                <i aria-hidden="true" className="search icon search-icon" />
-                <Dropdown onChange={this.handleChange} options={searchOptions} className="search-input"  fluid multiple search selection placeholder="Search ..." ></Dropdown>
-              </div>
-            </div>  
-          </div>
+          {/*<div className="sub-header">*/}
+            {/*<div className="ui menu">*/}
+              {/*<div className="container select-menu">*/}
+                {/*<Link to="/" className="item">Home</Link>*/}
+                {/*<Link to="/about" className="item">About Us</Link>*/}
+                {/*<Link to="/blackboard" className="item">Blackboard</Link>*/}
+                {/*<Link to="/profile" className="item">Your Space</Link>*/}
+              {/*</div>*/}
+            {/*</div>  */}
+          {/*</div>*/}
           <div className="main">
-            <Route path="/" exact component={Index} />
+            <Route path="/" exact component={Home} />
             <Route path="/about" component={About} />
             <Route path="/blackboard" component={Blackboard} />
             <Route path="/login" component={LogIn} />
             <Route path="/signup" component={SignUp} />
-            <Route path="/personalSpace" component={PersonalSpace} />
+            <Route path="/profile" component={Profile} />
           </div>
         </div>
     );
