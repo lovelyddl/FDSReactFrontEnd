@@ -43,8 +43,8 @@ class SignUp extends React.Component {
     if (this.formValid()) {
       let res = signup(data.userName, data.phone, data.email, data.password);
       res.then((response) => {
-        let data = response.data
-        if (data.code === 0) {
+        let getValue = response.data
+        if (getValue.code === 0) {
           console.log(`
             Successfully Submitting:
             User Name: ${data.userName}
@@ -54,8 +54,8 @@ class SignUp extends React.Component {
           `);
           alert("Welcome to join us")
           this.props.history.push('/');
-        } else if (data.code === 1) {
-          alert(data.error);
+        } else if (getValue.code === 1) {
+          alert(getValue.error);
         }
       }).catch(function (error) {
         alert("Database failed to connect");
