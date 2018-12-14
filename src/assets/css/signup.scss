@@ -1,28 +1,38 @@
 .register-form {
-  margin-left: 25%;
-  margin-top: 50px;
-  label {
-    text-align: left;
-  }
-  .field {
-    width: 45%;
-  }
-  .submit-button {
-    .ui.primary.button {
-      float: left;
-      margin-top: 30px;
-    }
-  }
+  margin-left: 30%;
+  padding-top: 80px;
+  width: 70%;
   .ui.form {
-    .errorBorder {
-      border: 1px solid red;
+    width: 50%;
+    .field {
+      width: 90%;
+      label {
+        text-align: left;
+      }
+      .errorBorder {
+        border: 1px solid red;
+      }
+      .errorMessage {
+        color: red;
+        font-size: 15px;
+      }
+      .hide {
+        display: none;
+      }
+      .ui.radio.checkbox {
+        margin-left: 15%;
+        font-size: 16px;
+        margin-top: 20px;
+      }
     }
-  }
-  .errorMessage {
-    color: red;
-    font-size: 15px;
-  }
-  .hide {
-    display: none;
+    .join-check {
+      margin-top: 80px;
+    }
+    .submit-button {
+      .ui.primary.button {
+        margin-top: 10px;
+        float: left;
+      }
+    }
   }
 }

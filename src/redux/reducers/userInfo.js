@@ -4,7 +4,8 @@ import { ADD_USER } from "../actionTypes";
 const initialState = {
   userInfo: {
     userId: "",
-    password: ""
+    password: "",
+    role: ""
   }
 };
 

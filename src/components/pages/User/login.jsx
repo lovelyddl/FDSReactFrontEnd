@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../../assets/css/login.scss'
 import { Link } from "react-router-dom";
-import { Dropdown } from "semantic-ui-react";
+import { Dropdown, Radio } from "semantic-ui-react";
 import { addUser } from "../../../redux/actions"
 import { connect } from "react-redux";
 import { userLogin } from "../../../api/user";
@@ -9,7 +9,7 @@ import { userLogin } from "../../../api/user";
 const loginMethods = [
   { key: 'userName', icon: 'user', text: 'User Name', value: 'userName' },
   { key: 'phone', icon: 'phone', text: 'Phone Number', value: 'phone' },
-  { key: 'email', icon: 'mail', text: 'Email', value: 'email' },
+  { key: 'email', icon: 'mail', text: 'Email', value: 'email' }
 ]
 
 class LogIn extends React.Component {
@@ -19,50 +19,57 @@ class LogIn extends React.Component {
       data: {
         userId: "",
         password: "",
-        logType: ''
+        logType: '',
+        role: ''
       },
       loading: false,
       errors: {}
     };
   }
 
-  // 同步改变输入和state中对应的属性
-  // text using this one onChange method
-  onChange = e => {
+  componentDidMount() {
+    window.scrollTo(0, 0)
+  }
+
+  // input change will be updated in state
+  handleInputChange = e => {
     const { name, value } = e.target;
     this.setState({
-      // ...this.state.data : save all data exits
-      // e.target : contains all form information
       data: { ...this.state.data, [name]: value }
-    });
+    }, () => {
+      // console.log(this.state.data)
+    })
   }
 
-  onChangeLogMethod = (val, text) => {
-    this.setState({data: {  ...this.state.data, logType: text.value }} //, 
-      // () => { console.log(this.state.data.logType) }
-    )
+  // login method and user role will be updated in state
+  handleSelectChange = (e, text) => {
+    this.setState({
+      data: { ...this.state.data, [text.name]: text.value }
+    }, () => {
+      // console.log(this.state.data)
+    })
   }
 
+  // post the log in request to the server
   handleLog = () => {
     if (this.state.data.logType === '') {
       alert('Please select the login method')
+    } else if (this.state.data.role === '') {
+      alert('Please select the login user role')
     } else {
-      let res = userLogin(this.state.data.userId, this.state.data.password, this.state.data.logType);
+      let res = userLogin(this.state.data.userId, this.state.data.password, this.state.data.logType, this.state.data.role);
       res.then((response) => {
         let data = response.data
         if (data.code === 0) {
           alert("Log in Successfully!!")
           this.props.addUser(this.state.data);
-          this.setState({ data: {
-            userId: "",
-            password: ""
-          }});
           this.props.history.push('/');
         } else if (data.code === 1) {
           alert(data.error);
           this.setState({ data: {
             userId: "",
-            password: ""
+            password: "",
+            role: ""
           }});
         }
       }).catch(function (error) {
@@ -79,21 +86,33 @@ class LogIn extends React.Component {
           <div className="column">
             <h2 className="ui image header">
               <div className="content">
-                Log-in to your account
+                Log In Your Account
               </div>
             </h2>
             <form method="get" className="ui large form">
               <div className="ui stacked secondary  segment">
                 <div className="field">
                   <div className="ui left input">
-                    <Dropdown value={data.logType} onChange={this.onChangeLogMethod} options={loginMethods} className="icon" button placeholder="Login Method"></Dropdown>
-                    <input value={data.userId} type="text" name="userId" onChange={this.onChange}/> 
+                    <Dropdown value={data.logType} onChange={this.handleSelectChange} 
+                      options={loginMethods} className="icon" name="logType" button placeholder="Login Method">
+                    </Dropdown>
+                    <input value={data.userId} type="text" name="userId" placeholder={"Please input " + data.logType} onChange={this.handleInputChange}/> 
                   </div>
                 </div>
                 <div className="field">
                   <div className="ui left icon input">
                     <i className="lock icon"></i>
-                    <input value={data.password} type="password" name="password" placeholder="Please input password" onChange={this.onChange}/> 
+                    <input value={data.password} type="password" name="password" placeholder="Please input password" onChange={this.handleInputChange}/> 
+                  </div>
+                </div>
+                <div className="field">
+                  <div className="ui left">
+                  <Radio label='Customer' name='role' value='customer'
+                    checked={this.state.data.role === 'customer'}
+                    onChange={this.handleSelectChange}/>
+                  <Radio label='DeliveryMan' name='role' value='deliveryMan' 
+                    checked={this.state.data.role === 'deliveryMan'}
+                    onChange={this.handleSelectChange}/>
                   </div>
                 </div>
                 <div onClick={this.handleLog} className="ui fluid large teal submit button">Login</div>

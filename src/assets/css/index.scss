@@ -1,6 +1,13 @@
 .search-box {
   width: 100%;
-  margin-top: 20px;
+}
+.ui.input {
+  float: left;
+  width: 50%;
+  margin-bottom: 15px;
+  .index-search-button {
+    margin-left: 5px;
+  }
 }
 
 .home-header {

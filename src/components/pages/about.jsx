@@ -7,6 +7,10 @@ class AboutPage extends React.Component {
   //   // console.log(this.props.history.location.pathname)
   // }
 
+  componentDidMount() {
+    window.scrollTo(0, 0)
+  }
+
   render() {
     return (
       <div>

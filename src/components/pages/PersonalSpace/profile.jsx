@@ -2,6 +2,10 @@ import React from 'react'
 
 class PersonalSpace extends React.Component {
 
+  componentDidMount() {
+    window.scrollTo(0, 0)
+  }
+
   render() {
     return (
       <div>

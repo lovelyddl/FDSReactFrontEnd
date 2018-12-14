@@ -1,12 +1,7 @@
 import React from 'react'
 import '../../../assets/css/signup.scss'
-import { Form, Button } from "semantic-ui-react";
+import { Form, Button, Radio } from "semantic-ui-react";
 import { signup } from "../../../api/user"
-
-// const genderOptions = [
-//   { key: 'm', text: 'Male', value: 'male' },
-//   { key: 'f', text: 'Female', value: 'female' },
-// ];
 
 const emailRegex = RegExp(
   /^([a-zA-Z0-9._-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/
@@ -15,7 +10,6 @@ const emailRegex = RegExp(
 const phoneRegex = RegExp(
   /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/
 );
-
 
 class SignUp extends React.Component {
   constructor(props){
@@ -26,10 +20,15 @@ class SignUp extends React.Component {
         phone: "",
         email: "",
         password: "",
-        checked: false
+        checked: false,
+        role: ''
       },
       errors: {}
     };
+  }
+
+  componentDidMount() {
+    window.scrollTo(0, 0)
   }
 
   formValid = () => {
@@ -41,7 +40,7 @@ class SignUp extends React.Component {
     const { data } = this.state;
     e.preventDefault();
     if (this.formValid()) {
-      let res = signup(data.userName, data.phone, data.email, data.password);
+      let res = signup(data.userName, data.phone, data.email, data.password, data.role);
       res.then((response) => {
         let getValue = response.data
         if (getValue.code === 0) {
@@ -51,6 +50,7 @@ class SignUp extends React.Component {
             Phone: ${data.phone}
             Email: ${data.email}
             Password: ${data.password}
+            Role: ${data.role}
           `);
           alert("Welcome to join us")
           this.props.history.push('/');
@@ -90,6 +90,12 @@ class SignUp extends React.Component {
 
   onChangeCheckbox = (val, text) => {
     this.setState({ data: { ...this.state.data, checked: text.checked }});
+  }
+
+  handleSelectChange = (e, text) => {
+    this.setState({
+      data: { ...this.state.data, [text.name]: text.value }
+    })
   }
 
   render() {
@@ -141,7 +147,18 @@ class SignUp extends React.Component {
             placeholder="Make it secure"/>
           <span className={ errors.password ? "errorMessage" : "hide" }>{errors.password}</span>
         </Form.Field>
-        <Form.Checkbox onChange={this.onChangeCheckbox} required label='Join FDS. By joining I accept all terms and conditions.' />
+        <Form.Field required>
+          <label>User Role</label>
+          <div className="ui left input">
+          <Radio label='Customer' name='role' value='customer'
+            checked={this.state.data.role === 'customer'}
+            onChange={this.handleSelectChange}/>
+          <Radio label='DeliveryMan' name='role' value='deliveryMan' 
+            checked={this.state.data.role === 'deliveryMan'}
+            onChange={this.handleSelectChange}/>
+          </div>
+        </Form.Field>
+        <Form.Checkbox className="join-check" onChange={this.onChangeCheckbox} required label='Join FDS. By joining I accept all terms and conditions.'/>
         <div className="submit-button">
           <Button primary type="submit">Join Us</Button>
         </div>
