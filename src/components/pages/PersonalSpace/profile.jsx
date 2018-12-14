@@ -5,7 +5,7 @@ class PersonalSpace extends React.Component {
   render() {
     return (
       <div>
-        <h1>Personal Space Home Page</h1>
+        <h1>User Profile Page</h1>
       </div>
     );
   }

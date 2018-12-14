@@ -29,10 +29,11 @@ class LogIn extends React.Component {
   // 同步改变输入和state中对应的属性
   // text using this one onChange method
   onChange = e => {
+    const { name, value } = e.target;
     this.setState({
       // ...this.state.data : save all data exits
       // e.target : contains all form information
-      data: { ...this.state.data, [e.target.name]: e.target.value }
+      data: { ...this.state.data, [name]: value }
     });
   }
 

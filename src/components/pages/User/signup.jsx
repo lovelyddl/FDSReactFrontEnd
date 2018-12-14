@@ -74,7 +74,7 @@ class SignUp extends React.Component {
     } else if (name === "phone" && !phoneRegex.test(value)) {
       errorMessage = "please enter a valid phone number";
     } else if (name === "email" && !emailRegex.test(value)) {
-      errorMessage = "invalid email address";
+      errorMessage = "please enter a valid email address";
     } else if (name === "password" && value.length < 8) {
       errorMessage = "minimum 8 characters required";
     }
