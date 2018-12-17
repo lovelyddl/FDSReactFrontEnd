@@ -3,6 +3,7 @@ import '../../assets/css/index.scss';
 import background from '../../assets/img/home.jpg';
 import { connect } from "react-redux";
 import { Dropdown,  Button} from 'semantic-ui-react'
+import Loading from '../loading'
 
 class Index extends React.Component {
   constructor(props) {
@@ -15,12 +16,18 @@ class Index extends React.Component {
         { key: "restType", value: "restType", text: 'Restaurants Type'}
       ],
       searchQuery: '',
-      searchType: ''
+      searchType: '',
+      loading: true
     }
   }
 
   componentDidMount() {
     window.scrollTo(0, 0)
+    setTimeout(()=>{
+      this.setState({
+        loading: false
+      })
+    }, 100)
   }
 
   handleChange = (e) => {
@@ -41,18 +48,23 @@ class Index extends React.Component {
 
   render() {
     const { searchOptions, searchQuery } = this.state;
-    return (
-      <div>
-        <div className="ui input search-box">
-          <Dropdown onChange={this.getSearchWay} options={searchOptions} button placeholder="Choose search method" ></Dropdown>
-          <input value={searchQuery} type="text" name="searchQuery" onChange={this.handleChange}/>
-          <Button className="index-search-button" icon='search' onClick={this.handleSearch}/>
+    if (this.state.loading) {
+      return (<Loading></Loading>)
+    } else {
+      return (
+        <div>
+          <div className="ui input search-box">
+            <Dropdown onChange={this.getSearchWay} options={searchOptions} button placeholder="Choose search method" ></Dropdown>
+            <input value={searchQuery} type="text" name="searchQuery" onChange={this.handleChange}/>
+            <Button className="index-search-button" icon='search' onClick={this.handleSearch}/>
+          </div>
+          <div className="home-header">
+            <img className="home-img" src={background} alt=""/>
+          </div>
+          
         </div>
-        <div className="home-header">
-          <img className="home-img" src={background} alt=""/>
-        </div>
-      </div>
-    );
+      );
+    }
   }
 }
 

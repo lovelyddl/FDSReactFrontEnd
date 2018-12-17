@@ -1,6 +1,6 @@
 import React from 'react' 
 import '../../../assets/css/restList.scss'
-import { queryRestList } from "../../../api/restaurants"
+// import { queryRestList } from "../../../api/restaurants"
 
 class RestList extends React.Component {
 

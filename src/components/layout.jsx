@@ -1,17 +1,25 @@
 import React from 'react';
 import '../assets/css/layout.scss';
 import { Route, Link } from "react-router-dom";
-import Index from './pages/index';
+// import Index from './pages/index';
 import About from '../components/pages/about';
 import Blackboard from './pages/PersonalSpace/blackboard';
-import SignUp from '../components/pages/User/signup';
-import LogIn from '../components/pages/User/login';
+// import SignUp from '../components/pages/User/signup';
+// import LogIn from '../components/pages/User/login';
 import Profile from './pages/PersonalSpace/profile';
-import restList from './pages/Restaurants/list';
+// import restList from './pages/Restaurants/list';
 import { connect } from "react-redux";
 import { addUser } from "../redux/actions"
 import PropTypes from "prop-types";
 import { checkLog, logout } from "../api/user";
+import Loadable from 'react-loadable';
+import Loading from './loading'
+
+// loading the pages
+let Index = Loadable({ loader: () => import('./pages/index'), loading: Loading })
+let SignUp = Loadable({ loader: () => import('../components/pages/User/signup'), loading: Loading })
+let LogIn = Loadable({ loader: () => import('../components/pages/User/login'), loading: Loading })
+let restList = Loadable({ loader: () => import('./pages/Restaurants/list'), loading: Loading })
 
 class Layout extends React.Component {
   constructor(props) {
@@ -67,11 +75,9 @@ class Layout extends React.Component {
         <div className="layout-style">
           <div className="header">
             <div className="ui menu inverted fixed">
-              <div className="ui left menu  inverted select-menu">
-              <div className="item title-word">
-                <Link to="/" replace>Food Delivery System</Link>
-              </div>
-              </div>
+                <div className="item title-word">
+                  <Link to="/" replace>Food Delivery System</Link>
+                </div>
                 <div className="container select-menu">
                   <Link to="/about" className="item" replace>About Us</Link>
                   <Link to="/blackboard" className="item" replace>Blackboard</Link>
