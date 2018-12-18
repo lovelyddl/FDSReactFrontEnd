@@ -1,50 +1,107 @@
-import React from 'react' 
-import '../../../assets/css/restList.scss'
-// import { queryRestList } from "../../../api/restaurants"
+import React from 'react' ;
+import { Button, Card, Image, Dropdown } from 'semantic-ui-react'
+import '../../../assets/css/restList.scss';
+import { queryRestList } from "../../../api/restaurants"
 
 class RestList extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
+      searchOptions: [
+        { key: "restName", value: "restName", text: 'Restaurants Name' },
+        { key: "restAddr", value: "restAddr", text: 'Restaurants Address'},
+        { key: "zipcode", value: "zipcode", text: 'Restaurants Zipcode'},
+        { key: "restType", value: "restType", text: 'Restaurants Type'}
+      ],
+      searchQuery: '',
+      searchType: '',
+      restList: []
+    }
+    this.queryTableList();
+  }
 
+  handleChange = (e) => {
+    this.setState({
+      searchQuery: e.target.value
+    })
+  }
+
+  handleSearch = () => {
+    console.log("search " + this.state.searchQuery + " through " + this.state.searchType)
+    this.queryTableList();
+  }
+
+  getSearchWay = (value, text) => {
+    this.setState({
+      searchType: text.value
+    })
+  }
+
+  queryTableList = async () => {
+    if (this.state.searchQuery !== '' && this.state.searchType === '') {
+      alert('Please select search type')
+    } else {
+      try {
+        let res = await queryRestList(this.state.searchType, this.state.searchQuery);
+        let tableData = res.data.data;
+        this.setState({
+          restList: tableData
+        })
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 
-  queryTableList = () => {
-    return [];
+  getList = () => {
+    let result = []
+    for (let i = 0; i < this.state.restList.length; i++) {
+      let item = this.state.restList[i];
+      result.push(
+        <div key={i} className="ui card">
+          <div  className="ui content">
+            <Image floated='right' size='mini' src='' />
+            <Card.Header>{item.rname}</Card.Header>
+            <Card.Description>
+              <div>Open Time: {item.opentime}</div>
+              <div>Restaurants Type: {item.restype}</div>
+            </Card.Description>
+            <Card.Content extra>
+              <div className='ui two buttons'>
+                <Button basic color='green'>Detail</Button>
+                <Button basic color='yellow'>Add to Cart</Button>
+              </div>
+            </Card.Content>
+          </div>
+        </div>
+      )
+    }
+    return result;
   }
 
   render() {
+    const { searchOptions, searchQuery } = this.state;
     let tableHeaders = [];
     let headerInfo = ['#', 'Name', 'Address', 'Zipcode', 'Type', 'Open Time', 'Manager']
     for (let i = 0; i < 7; i++) {
       tableHeaders.push(<th key={headerInfo[i]}>{headerInfo[i]}</th>);
     }
-    let tableContents = this.queryTableList();
+    let tableContents = this.getList();
     return (
       <div className="rest-list">
-        <h1> Welcome to Search List </h1>
-        <table className="ui celled table">
-          <thead>
-            <tr>
-              {tableHeaders}
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>No Name Specified</td>
-              <td>Unknown</td>
-              <td className="negative">None</td>
-            </tr>
-            <tr className="positive">
-              <td>Jimmy</td>
-              <td><i className="icon checkmark"></i> Approved</td>
-              <td>None</td>
-            </tr>
+        <div className="search-box">
+          <div className="ui input">
+            <Dropdown onChange={this.getSearchWay} options={searchOptions} button placeholder="Search Restaurants" ></Dropdown>
+            <input value={searchQuery} type="text" name="searchQuery" onChange={this.handleChange}/>
+            <Button className="index-search-button" icon='search' onClick={this.handleSearch}/>
+          </div>
+        </div>
+        <div className="cards-table">
+          <Card.Group>
             {tableContents}
-          </tbody>
-        </table>
+          </Card.Group>
+        </div>
       </div>
     );
   }

@@ -1,6 +1,6 @@
-import React from 'react'
-import { Loader } from 'semantic-ui-react'
-import '../assets/css/loading.scss'
+import React from 'react';
+import { Loader } from 'semantic-ui-react';
+import '../assets/css/loading.scss';
 
 const Loading = () => (
   <div className="loading-page">

@@ -1,21 +1,9 @@
-.search-box {
-  width: 100%;
-}
-.ui.input {
-  float: left;
-  width: 50%;
-  margin-left: 25%;
-  margin-bottom: 15px;
-  .index-search-button {
-    margin-left: 5px;
+.index-style {
+  .search-col {
+    margin-top: 30px;
+    float: left;
   }
-}
-
-.home-header {
-  width: 100%;
-  margin-top: 20px;
-  .home-img {
-    width: 100%;
-    height: 30%;
+  .index-content {
+    float: left;
   }
 }

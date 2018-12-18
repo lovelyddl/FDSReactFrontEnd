@@ -7,25 +7,24 @@ import Blackboard from './pages/PersonalSpace/blackboard';
 // import SignUp from '../components/pages/User/signup';
 // import LogIn from '../components/pages/User/login';
 import Profile from './pages/PersonalSpace/profile';
-// import restList from './pages/Restaurants/list';
 import { connect } from "react-redux";
 import { addUser } from "../redux/actions"
 import PropTypes from "prop-types";
 import { checkLog, logout } from "../api/user";
 import Loadable from 'react-loadable';
-import Loading from './loading'
+import Loading from './loading';
 
 // loading the pages
 let Index = Loadable({ loader: () => import('./pages/index'), loading: Loading })
 let SignUp = Loadable({ loader: () => import('../components/pages/User/signup'), loading: Loading })
 let LogIn = Loadable({ loader: () => import('../components/pages/User/login'), loading: Loading })
-let restList = Loadable({ loader: () => import('./pages/Restaurants/list'), loading: Loading })
+let restList = Loadable({ loader: () => import('../components/pages/Restaurants/list'), loading: Loading })
 
 class Layout extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      //searchQuery: []
+
     }
   }
 
@@ -35,7 +34,7 @@ class Layout extends React.Component {
     res.then((response) => {
       let data = response.data
       if (data.code === 1) {
-        // console.log(data.error);
+        console.log(data.error);
       } else if (data.code === 0) {
         this.props.addUser(data.userInfo);
       }
@@ -59,9 +58,7 @@ class Layout extends React.Component {
       password: "",
       role: ""
     });
-    if (this.props.history.location.pathname !== '/') {
-      this.props.history.push('/')
-    }
+    this.props.history.push('/')
   }
 
   render() {

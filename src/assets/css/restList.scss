@@ -1,3 +1,48 @@
 .rest-list {
-  margin-top: 50px;
+  margin-top: 20px;
+  margin-left: 10%;
+  .search-box {
+    margin-top: 30px;
+    width: 100%;
+    float: left;
+    .ui.dropdown {
+      width: 195px;
+      height: 42px;
+      .text {
+        display: inline-block;
+        font-size: 14px;
+      }
+    }
+    .ui.input {
+      float: left;
+      width: 50%;
+      height: 42px;
+      margin-left: 15%;
+      margin-bottom: 15px;
+      .index-search-button {
+        height: 42px;
+        width: 42px;
+        margin-left: 5px;
+      }
+    }
+  }
+  .cards-table {
+    float: left;
+    margin-top: 10px;
+    .ui.card {
+      height: 200px;
+      width: 400px;
+      margin-left: 10px;
+      .description {
+        padding-top: 20px;
+        height: 70px;
+      }
+      .ui.two.buttons {
+        margin-top: 30px;
+        width: 80%;
+      }
+    }
+    
+  }
+
 }
