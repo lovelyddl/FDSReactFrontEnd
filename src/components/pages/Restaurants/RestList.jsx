@@ -62,7 +62,7 @@ class RestList extends React.Component {
         <div key={i} className="ui card">
           <div  className="ui content">
             <Image floated='right' size='mini' src='' />
-            <Card.Header>{item.rname}</Card.Header>
+            <div className="header">{item.rname}</div>
             <Card.Description>
               <div>Open Time: {item.opentime}</div>
               <div>Restaurants Type: {item.restype}</div>

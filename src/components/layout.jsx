@@ -18,7 +18,7 @@ import Loading from './loading';
 let Index = Loadable({ loader: () => import('./pages/index'), loading: Loading })
 let SignUp = Loadable({ loader: () => import('../components/pages/User/signup'), loading: Loading })
 let LogIn = Loadable({ loader: () => import('../components/pages/User/login'), loading: Loading })
-let restList = Loadable({ loader: () => import('../components/pages/Restaurants/list'), loading: Loading })
+let restList = Loadable({ loader: () => import('./pages/Restaurants/RestList'), loading: Loading })
 
 class Layout extends React.Component {
   constructor(props) {
