@@ -20,7 +20,7 @@ class Index extends React.Component {
       <div className="index-style">
         <div className="search-col">
           <Link to="/rest/list">
-            <button class="ui teal large basic button">Go To Search Restaurants</button>
+            <button className="ui teal large basic button">Go To Search Restaurants</button>
           </Link>
         </div>
         <div className="index-content">

@@ -1,19 +1,21 @@
 import React from 'react';
 import '../assets/css/layout.scss';
-import { Route, Link } from "react-router-dom";
-// import Index from './pages/index';
+import { Route, Link, Redirect } from "react-router-dom";
+import Loadable from 'react-loadable';
+import PropTypes from "prop-types";
+// import pages
 import About from '../components/pages/about';
 import Blackboard from './pages/PersonalSpace/blackboard';
-// import SignUp from '../components/pages/User/signup';
-// import LogIn from '../components/pages/User/login';
 import Profile from './pages/PersonalSpace/profile';
 import Cart from './pages/PersonalSpace/cart';
+import Loading from './loading';
+import Unauthorization from './unauthorization';
+// import functions
 import { connect } from "react-redux";
 import { addUser } from "../redux/actions"
-import PropTypes from "prop-types";
 import { checkLog, logout } from "../api/user";
-import Loadable from 'react-loadable';
-import Loading from './loading';
+import { checkPermission } from '../shared/utils/permission';
+
 
 // loading the pages
 let Index = Loadable({ loader: () => import('./pages/index'), loading: Loading })
@@ -29,7 +31,7 @@ class Layout extends React.Component {
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     // refresh to check if log
     let res = checkLog();
     res.then((response) => {
@@ -59,24 +61,23 @@ class Layout extends React.Component {
       password: "",
       role: ""
     });
-    this.props.history.push('/')
+    if (this.props.location.pathname !== '/') {
+      this.props.history.push('/')
+    }
   }
 
   render() {
-    let log, sign, cart = null;
-    if (this.props.userInfo !== undefined && this.props.userInfo.userId !== "" && this.props.userInfo.password !== "") {
-      log = <div onClick={this.logOut} className="item"><div className="ui button red">Log out</div></div>;
-      cart = <div className="item"><Link to="/cart" replace><i class="shopping cart icon"></i></Link></div>;
-    } else {
-      log = <div className="item"><Link to="/login" className="ui button" replace>Log in</Link></div>;
-      sign = <div className="item"><Link to="/signup" className="ui primary button" replace>Sign Up</Link></div>;
-    }
+    const { userInfo } = this.props;
+    let cart = checkPermission(userInfo).isCustomer ? <div className="item"><Link to="/cart" replace><i className="shopping cart icon"></i></Link></div> : null;
+    let log = checkPermission(userInfo).isLog ? <div className="item"><div onClick={this.logOut} className="ui button red">Log out</div></div> : <div className="item"><Link to="/login" className="ui button" replace>Log in</Link></div>;
+    let sign = checkPermission(userInfo).isLog ? null : <div className="item"><Link to="/signup" className="ui primary button" replace>Sign Up</Link></div>;
+
     return (
         <div className="layout-style">
           <div className="header">
             <div className="ui menu inverted fixed">
                 <div className="item title-word">
-                  <Link to="/" replace><i class="yen sign icon"></i><i class="dollar sign icon"></i>Food Delivery System</Link>
+                  <Link to="/" replace><i className="yen sign icon"></i><i className="dollar sign icon"></i>Food Delivery System</Link>
                 </div>
                 <div className="container select-menu">
                   <Link to="/about" className="item" replace>About Us</Link>
@@ -90,7 +91,6 @@ class Layout extends React.Component {
               </div>
             </div>    
           </div>
-
           <div className="main">
             <Route path="/" exact component={Index} />
             <Route path="/about" component={About} />
@@ -99,7 +99,7 @@ class Layout extends React.Component {
             <Route path="/signup" component={SignUp} />
             <Route path="/profile" component={Profile} />
             <Route path="/rest/list" component={restList} />
-            <Route path="/cart" component={Cart} />
+            <Route path="/cart" render={() => (checkPermission(userInfo).isCustomer ? (<Redirect to={Cart}/>) : (<Unauthorization/>)) }/>
           </div>
         </div>
     );
