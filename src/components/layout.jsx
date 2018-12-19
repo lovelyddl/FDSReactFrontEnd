@@ -7,6 +7,7 @@ import Blackboard from './pages/PersonalSpace/blackboard';
 // import SignUp from '../components/pages/User/signup';
 // import LogIn from '../components/pages/User/login';
 import Profile from './pages/PersonalSpace/profile';
+import Cart from './pages/PersonalSpace/cart';
 import { connect } from "react-redux";
 import { addUser } from "../redux/actions"
 import PropTypes from "prop-types";
@@ -62,32 +63,34 @@ class Layout extends React.Component {
   }
 
   render() {
-    let log = null
+    let log, sign, cart = null;
     if (this.props.userInfo !== undefined && this.props.userInfo.userId !== "" && this.props.userInfo.password !== "") {
       log = <div onClick={this.logOut} className="item"><div className="ui button red">Log out</div></div>;
+      cart = <div className="item"><Link to="/cart" replace><i class="shopping cart icon"></i></Link></div>;
     } else {
-      log = <div className="item"><Link to="/login" className="ui button" replace>Log in</Link></div>
+      log = <div className="item"><Link to="/login" className="ui button" replace>Log in</Link></div>;
+      sign = <div className="item"><Link to="/signup" className="ui primary button" replace>Sign Up</Link></div>;
     }
     return (
         <div className="layout-style">
           <div className="header">
             <div className="ui menu inverted fixed">
                 <div className="item title-word">
-                  <Link to="/" replace>Food Delivery System</Link>
+                  <Link to="/" replace><i class="yen sign icon"></i><i class="dollar sign icon"></i>Food Delivery System</Link>
                 </div>
                 <div className="container select-menu">
                   <Link to="/about" className="item" replace>About Us</Link>
                   <Link to="/blackboard" className="item" replace>Blackboard</Link>
                   <Link to="/Profile" className="item" replace>Profile</Link>
                 </div>
-              <div className="ui right menu inverted"> 
+              <div className="ui right menu inverted">
+                {cart}
                 {log}
-                <div className="item">
-                  <Link to="/signup" className="ui primary button" replace>Sign Up</Link>
-                </div>
+                {sign}
               </div>
             </div>    
           </div>
+
           <div className="main">
             <Route path="/" exact component={Index} />
             <Route path="/about" component={About} />
@@ -96,6 +99,7 @@ class Layout extends React.Component {
             <Route path="/signup" component={SignUp} />
             <Route path="/profile" component={Profile} />
             <Route path="/rest/list" component={restList} />
+            <Route path="/cart" component={Cart} />
           </div>
         </div>
     );

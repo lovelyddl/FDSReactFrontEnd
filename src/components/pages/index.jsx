@@ -2,7 +2,6 @@ import React from 'react';
 import '../../assets/css/index.scss';
 import Home from './home'
 import { Route, Link } from "react-router-dom";
-import { Button } from 'semantic-ui-react'
 
 class Index extends React.Component {
   constructor(props) {
@@ -21,7 +20,7 @@ class Index extends React.Component {
       <div className="index-style">
         <div className="search-col">
           <Link to="/rest/list">
-            <Button> Search Restaurants </Button>
+            <button class="ui teal large basic button">Go To Search Restaurants</button>
           </Link>
         </div>
         <div className="index-content">
