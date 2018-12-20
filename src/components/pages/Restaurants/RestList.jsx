@@ -68,9 +68,8 @@ class RestList extends React.Component {
               <div>Restaurants Type: {item.restype}</div>
             </Card.Description>
             <Card.Content extra>
-              <div className='ui two buttons'>
-                <Button basic color='green'>Detail</Button>
-                <Button basic color='yellow'>Add to Cart</Button>
+              <div className="view-button">
+                <Button basic color='blue'>View</Button>
               </div>
             </Card.Content>
           </div>

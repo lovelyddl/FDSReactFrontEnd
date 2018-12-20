@@ -68,6 +68,8 @@ class Layout extends React.Component {
 
   render() {
     const { userInfo } = this.props;
+    let bb = checkPermission(userInfo).isLog ? <div className="item"><Link to="/blackboard" replace>Blackboard</Link></div> : null;
+    let profile = checkPermission(userInfo).isLog ? <div className="item"><Link to="/Profile" replace>Username</Link></div> : null;
     let cart = checkPermission(userInfo).isCustomer ? <div className="item"><Link to="/cart" replace><i className="shopping cart icon"></i></Link></div> : null;
     let log = checkPermission(userInfo).isLog ? <div className="item"><div onClick={this.logOut} className="ui button red">Log out</div></div> : <div className="item"><Link to="/login" className="ui button" replace>Log in</Link></div>;
     let sign = checkPermission(userInfo).isLog ? null : <div className="item"><Link to="/signup" className="ui primary button" replace>Sign Up</Link></div>;
@@ -81,10 +83,10 @@ class Layout extends React.Component {
                 </div>
                 <div className="container select-menu">
                   <Link to="/about" className="item" replace>About Us</Link>
-                  <Link to="/blackboard" className="item" replace>Blackboard</Link>
-                  <Link to="/Profile" className="item" replace>Profile</Link>
                 </div>
               <div className="ui right menu inverted">
+                {bb}
+                {profile}
                 {cart}
                 {log}
                 {sign}
