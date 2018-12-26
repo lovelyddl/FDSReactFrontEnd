@@ -13,9 +13,20 @@
         font-size: 16px;
         border: 0;
       }
+      .user-icon-word {
+        float: left;
+        margin-left: 8px;
+      }
       .title-word {
         margin-left: 3%;
         font-size: 20px;
+      }
+      i.icon.user.circle {
+        margin-top: -4px;
+        float: left;
+      }
+      i.icon.user.circle:before {
+        font-size: 24px;
       }
     }
   }

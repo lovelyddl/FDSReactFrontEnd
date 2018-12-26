@@ -62,13 +62,14 @@ class LogIn extends React.Component {
         let data = response.data
         if (data.code === 0) {
           alert("Log in Successfully!!")
-          this.props.addUser(this.state.data);
+          this.props.addUser(data.userInfo);
           this.props.history.push('/');
         } else if (data.code === 1) {
           alert(data.error);
           this.setState({ data: {
             userId: "",
             password: "",
+            logType: "",
             role: ""
           }});
         }
@@ -112,6 +113,12 @@ class LogIn extends React.Component {
                     onChange={this.handleSelectChange}/>
                   <Radio label='DeliveryMan' name='role' value='deliveryMan' 
                     checked={this.state.data.role === 'deliveryMan'}
+                    onChange={this.handleSelectChange}/>
+                  <Radio label='Manager' name='role' value='manager' 
+                    checked={this.state.data.role === 'manager'}
+                    onChange={this.handleSelectChange}/>
+                  <Radio label='Admin' name='role' value='admin' 
+                    checked={this.state.data.role === 'admin'}
                     onChange={this.handleSelectChange}/>
                   </div>
                 </div>

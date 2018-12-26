@@ -7,6 +7,7 @@ export const addUser = (content) => ({
   payload: {
     userId: content.userId,
     password: content.password,
-    role: content.role
+    role: content.role,
+    userName: content.userName
   }
 });

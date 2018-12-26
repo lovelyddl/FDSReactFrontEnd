@@ -5,9 +5,13 @@ import Loadable from 'react-loadable';
 import PropTypes from "prop-types";
 // import pages
 import About from '../components/pages/about';
-import Blackboard from './pages/PersonalSpace/blackboard';
-import Profile from './pages/PersonalSpace/profile';
-import Cart from './pages/PersonalSpace/cart';
+// import Blackboard from './pages/User/blackboard';
+import CustomerB from '../components/pages/User/blackboard/customerB'
+import DeliveryManB from '../components/pages/User/blackboard/deliveryManB'
+import ManagerB from '../components/pages/User/blackboard/managerB'
+import AdminB from '../components/pages/User/blackboard/adminB'
+import Profile from './pages/User/profile';
+import Cart from './pages/User/cart';
 import Loading from './loading';
 import Unauthorization from './unauthorization';
 // import functions
@@ -21,7 +25,7 @@ import { checkPermission } from '../shared/utils/permission';
 let Index = Loadable({ loader: () => import('./pages/index'), loading: Loading })
 let SignUp = Loadable({ loader: () => import('../components/pages/User/signup'), loading: Loading })
 let LogIn = Loadable({ loader: () => import('../components/pages/User/login'), loading: Loading })
-let restList = Loadable({ loader: () => import('./pages/Restaurants/RestList'), loading: Loading })
+let RestList = Loadable({ loader: () => import('./pages/Restaurants/RestList'), loading: Loading })
 
 class Layout extends React.Component {
   constructor(props) {
@@ -46,6 +50,8 @@ class Layout extends React.Component {
     })
   }
 
+
+
   logOut = () => {
     let res = logout()
     res.then((response) => {
@@ -66,13 +72,30 @@ class Layout extends React.Component {
     }
   }
 
+  renderBlackboard = () => {
+    const { userInfo } = this.props;
+    if (checkPermission(userInfo).isLog) {
+      let checkRole = {
+        customer: <CustomerB/>,
+        deliveryMan: <DeliveryManB/>,
+        manager: <ManagerB/>,
+        admin: <AdminB/>
+      }
+      return checkRole[userInfo.role];
+    } else {
+      return <Redirect to="/unauthorization"/>;
+    }
+  }
+
   render() {
     const { userInfo } = this.props;
-    let bb = checkPermission(userInfo).isLog ? <div className="item"><Link to="/blackboard" replace>Blackboard</Link></div> : null;
-    let profile = checkPermission(userInfo).isLog ? <div className="item"><Link to="/Profile" replace>Username</Link></div> : null;
+    let bb = checkPermission(userInfo).isLog ? <div className="item"><Link to={`/blackboard/${userInfo.role}`} replace>Blackboard</Link></div> : null;
+    let profile = checkPermission(userInfo).isLog ? <div className="item"><Link to="/Profile" replace><i className="user circle icon"></i> <div className="user-icon-word"> {userInfo.userName}</div></Link></div> : null;
     let cart = checkPermission(userInfo).isCustomer ? <div className="item"><Link to="/cart" replace><i className="shopping cart icon"></i></Link></div> : null;
     let log = checkPermission(userInfo).isLog ? <div className="item"><div onClick={this.logOut} className="ui button red">Log out</div></div> : <div className="item"><Link to="/login" className="ui button" replace>Log in</Link></div>;
     let sign = checkPermission(userInfo).isLog ? null : <div className="item"><Link to="/signup" className="ui primary button" replace>Sign Up</Link></div>;
+
+    let permissionContent = <div className="ui right menu inverted">{bb}{profile}{cart}{log}{sign}</div>;
 
     return (
         <div className="layout-style">
@@ -84,24 +107,20 @@ class Layout extends React.Component {
                 <div className="container select-menu">
                   <Link to="/about" className="item" replace>About Us</Link>
                 </div>
-              <div className="ui right menu inverted">
-                {bb}
-                {profile}
-                {cart}
-                {log}
-                {sign}
-              </div>
+                {permissionContent}
             </div>    
           </div>
           <div className="main">
             <Route path="/" exact component={Index} />
             <Route path="/about" component={About} />
-            <Route path="/blackboard" component={Blackboard} />
             <Route path="/login" component={LogIn} />
             <Route path="/signup" component={SignUp} />
-            <Route path="/profile" component={Profile} />
-            <Route path="/rest/list" component={restList} />
-            <Route path="/cart" render={() => (checkPermission(userInfo).isCustomer ? (<Redirect to={Cart}/>) : (<Unauthorization/>)) }/>
+            <Route path="/rest/list" component={RestList} />
+            <Route path="/unauthorization" component={Unauthorization} />
+            <Route path="/cart" render={() => (checkPermission(userInfo).isCustomer ? (<Cart/>) : (<Redirect to="/unauthorization"/>)) }/>
+            <Route exact path="/blackboard" render={() => ( checkPermission(userInfo).isLog ? (<Redirect to={`/blackboard/${userInfo.role}`}/>) : (<Redirect to="/unauthorization"/>))}/>
+            <Route path={`/blackboard/${userInfo.role}`} render={this.renderBlackboard } />
+            <Route path="/profile" render={() => (checkPermission(userInfo).isLog ? (<Profile/>) : (<Redirect to="/unauthorization"/>)) } />
           </div>
         </div>
     );
@@ -112,7 +131,9 @@ class Layout extends React.Component {
 Layout.propTypes = {
   userInfo: PropTypes.shape({
     userId: PropTypes.string,
-    password: PropTypes.string
+    password: PropTypes.string,
+    role: PropTypes.string,
+    userName: PropTypes.string
   }),
   addUser: PropTypes.func.isRequired
 }

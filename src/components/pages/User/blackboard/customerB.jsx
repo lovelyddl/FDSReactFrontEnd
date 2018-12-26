@@ -1,6 +1,6 @@
 import React from 'react'
 
-class Blackboard extends React.Component {
+class CustomerB extends React.Component {
 
   componentDidMount() {
     window.scrollTo(0, 0)
@@ -9,11 +9,10 @@ class Blackboard extends React.Component {
   render() {
     return (
       <div>
-        <h1> Blackboard Page </h1>
-        <h1> My Task or My Order </h1>
+        <h1> CustomerB </h1>
       </div>
     );
   }
 }
 
-export default Blackboard
+export default CustomerB

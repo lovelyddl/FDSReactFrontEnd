@@ -5,7 +5,8 @@ const initialState = {
   userInfo: {
     userId: "",
     password: "",
-    role: ""
+    role: "",
+    userName: ''
   }
 };
 
