@@ -54,13 +54,22 @@ class RestList extends React.Component {
     }
   }
 
+  goDetail = (id) => {
+    this.props.history.push({
+      pathname: '/rest/detail',
+      state: {
+        restId: id
+      }
+    })      
+  }
+
   getList = () => {
     let result = []
     for (let i = 0; i < this.state.restList.length; i++) {
       let item = this.state.restList[i];
       result.push(
         <div key={i} className="ui card">
-          <div  className="ui content">
+          <div className="ui content">
             <Image floated='right' size='mini' src='' />
             <div className="header">{item.rname}</div>
             <Card.Description>
@@ -69,7 +78,7 @@ class RestList extends React.Component {
             </Card.Description>
             <Card.Content extra>
               <div className="view-button">
-                <Button basic color='blue'>View</Button>
+                <Button basic onClick={() => this.goDetail(item.rid)} color='blue'>View</Button>
               </div>
             </Card.Content>
           </div>

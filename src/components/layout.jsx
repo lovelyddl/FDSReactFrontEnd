@@ -14,18 +14,18 @@ import Profile from './pages/User/profile';
 import Cart from './pages/User/cart';
 import Loading from './loading';
 import Unauthorization from './unauthorization';
+import RestDetail from './pages/Restaurants/restDetail';
 // import functions
 import { connect } from "react-redux";
 import { addUser } from "../redux/actions"
 import { checkLog, logout } from "../api/user";
 import { checkPermission } from '../shared/utils/permission';
 
-
 // loading the pages
 let Index = Loadable({ loader: () => import('./pages/index'), loading: Loading })
 let SignUp = Loadable({ loader: () => import('../components/pages/User/signup'), loading: Loading })
 let LogIn = Loadable({ loader: () => import('../components/pages/User/login'), loading: Loading })
-let RestList = Loadable({ loader: () => import('./pages/Restaurants/RestList'), loading: Loading })
+let RestList = Loadable({ loader: () => import('./pages/Restaurants/restList'), loading: Loading })
 
 class Layout extends React.Component {
   constructor(props) {
@@ -115,7 +115,9 @@ class Layout extends React.Component {
             <Route path="/about" component={About} />
             <Route path="/login" component={LogIn} />
             <Route path="/signup" component={SignUp} />
-            <Route path="/rest/list" component={RestList} />
+            {/* <Route path="/rest" exact render={() => { return <Redirect to="/rest/list/"/> }}/> */}
+            <Route path="/rest/list" exact component={RestList} />
+            <Route path="/rest/detail" exact component={RestDetail} />
             <Route path="/unauthorization" component={Unauthorization} />
             <Route path="/cart" render={() => (checkPermission(userInfo).isCustomer ? (<Cart/>) : (<Redirect to="/unauthorization"/>)) }/>
             <Route exact path="/blackboard" render={() => ( checkPermission(userInfo).isLog ? (<Redirect to={`/blackboard/${userInfo.role}`}/>) : (<Redirect to="/unauthorization"/>))}/>

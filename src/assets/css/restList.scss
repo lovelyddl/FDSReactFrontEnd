@@ -1,6 +1,6 @@
 .rest-list {
   margin-top: 20px;
-  margin-left: 20%;
+  margin-left: 6%;
   .search-box {
     margin-top: 30px;
     width: 100%;
@@ -31,7 +31,9 @@
     margin-top: 10px;
     .ui.card {
       height: 200px;
-      width: 400px;
+      width: 30%;
+      min-width: 300px;
+      max-width: 500px;
       margin-left: 10px;
       .description {
         padding-top: 20px;
