@@ -1,11 +1,12 @@
 .register-form {
   margin-left: 30%;
-  padding-top: 80px;
+  padding-top: 30px;
   width: 70%;
   .ui.form {
     width: 50%;
     .field {
       width: 90%;
+      margin-bottom: 40px;
       label {
         text-align: left;
       }
@@ -14,8 +15,22 @@
       }
       .errorMessage {
         color: red;
-        font-size: 15px;
+        font-size: 16px;
+        float: left;
       }
+      .show-pass {
+        cursor: pointer;
+        position: absolute;
+        height: 30px;
+        background: #727272;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: .8em;
+        margin-top: 10px;
+        margin-left: 20px;
+      } 
       .hide {
         display: none;
       }
@@ -26,7 +41,7 @@
       }
     }
     .join-check {
-      margin-top: 80px;
+      margin-top: 50px;
     }
     .submit-button {
       .ui.primary.button {

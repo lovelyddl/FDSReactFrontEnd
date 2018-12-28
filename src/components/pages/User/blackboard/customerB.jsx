@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from "react-router";
 
 class CustomerB extends React.Component {
 
@@ -15,4 +16,4 @@ class CustomerB extends React.Component {
   }
 }
 
-export default CustomerB
+export default withRouter(CustomerB)

@@ -1,7 +1,8 @@
 import React from 'react'
 import '../../../assets/css/signup.scss'
 import { Form, Button, Radio } from "semantic-ui-react";
-import { signup } from "../../../api/user"
+import { signup, getUserDetail, editUser } from "../../../api/user"
+import { withRouter } from "react-router";
 
 const emailRegex = RegExp(
   /^([a-zA-Z0-9._-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/
@@ -23,12 +24,44 @@ class SignUp extends React.Component {
         checked: false,
         role: ''
       },
+      isProfile: props.location.pathname === '/profile' ? true : false,
+      userId: '',
+      passType: 'password',
       errors: {}
     };
   }
 
   componentDidMount() {
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
+    if (this.props.location.pathname === '/profile') {
+      this.queryUserDetail(this.props.userName, this.props.role)
+    }
+  }
+
+  queryUserDetail = async (userName, role) => {
+    try {
+      let res = await getUserDetail(userName, role);
+      if (res.data.code === 0) {
+        let userInfo = res.data.userInfo;
+        this.setState({
+          data: {
+            userName: userInfo.userName,
+            phone: userInfo.phone,
+            email: userInfo.email,
+            password: userInfo.password,
+            checked: true,
+            role: role
+          },
+          userId: userInfo.userId
+        }, () => {
+          // console.log(this.state.data)
+        })
+      } else {
+        console.log(res.data.error)
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   formValid = () => {
@@ -40,19 +73,23 @@ class SignUp extends React.Component {
     const { data } = this.state;
     e.preventDefault();
     if (this.formValid()) {
-      let res = signup(data.userName, data.phone, data.email, data.password, data.role);
+      let res = this.state.isProfile ? editUser(this.state.userId, data.userName, data.phone, data.email, data.password, data.role) : signup(data.userName, data.phone, data.email, data.password, data.role);
       res.then((response) => {
         let getValue = response.data
         if (getValue.code === 0) {
           console.log(`
-            Successfully Submitting:
+            Successfully Submission:
             User Name: ${data.userName}
             Phone: ${data.phone}
             Email: ${data.email}
             Password: ${data.password}
             Role: ${data.role}
           `);
-          alert("Welcome to join us")
+          if (this.state.isProfile) {
+            alert("Edit sucessfully")
+          } else {
+            alert("Welcome to join us")
+          }
           this.props.history.push('/');
         } else if (getValue.code === 1) {
           alert(getValue.error);
@@ -63,7 +100,7 @@ class SignUp extends React.Component {
     } else {
       console.log('Please enter correct required information');
     }
-  };
+  }
 
   onChange = e => {
     e.preventDefault();
@@ -98,12 +135,24 @@ class SignUp extends React.Component {
     })
   }
 
+  showHide = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    this.setState({
+      passType: this.state.passType === 'text' ? 'password' : 'text'
+    })  
+  }
+
   render() {
     const { errors, data } = this.state;
+    const hide = {display: "none"};
+    const show = {display: "block"};
+    let sumbitButtom = this.state.isProfile ? <Button primary type="submit">Edit</Button> : <Button primary type="submit">Join Us</Button>
+
     return (
     <div className="register-form clearfix">
-     <Form size="big" onSubmit={this.handleSubmit}>
-      <Form.Field required>
+      <Form size="big" onSubmit={this.handleSubmit}>
+        <Form.Field required>
           <label htmlFor="userName">User Name</label>
           <input
             className={ errors.userName ? "errorBorder" : null }
@@ -142,12 +191,14 @@ class SignUp extends React.Component {
             className={errors.password ? "errorBorder" : null}
             value={data.password}
             onChange={this.onChange}
-            type="password"
+            type={this.state.passType}
             name="password"
             placeholder="Make it secure"/>
+          <span className="show-pass" onClick={this.showHide}>{this.state.passType === 'text' ? 'Hide' : 'Show'} </span>
+            {/* <span className="password__strength" data-score={this.state.score} />  */}
           <span className={ errors.password ? "errorMessage" : "hide" }>{errors.password}</span>
         </Form.Field>
-        <Form.Field required>
+        <Form.Field required style={this.state.isProfile ? hide : show}>
           <label>User Role</label>
           <div className="ui left input">
           <Radio label='Customer' name='role' value='customer'
@@ -158,10 +209,8 @@ class SignUp extends React.Component {
             onChange={this.handleSelectChange}/>
           </div>
         </Form.Field>
-        <Form.Checkbox className="join-check" onChange={this.onChangeCheckbox} required label='Join FDS. By joining I accept all terms and conditions.'/>
-        <div className="submit-button">
-          <Button primary type="submit">Join Us</Button>
-        </div>
+        <Form.Checkbox required style={this.state.isProfile ? hide : show}  className="join-check" onChange={this.onChangeCheckbox}  label='Join FDS. By joining I accept all terms and conditions.'/>
+        <div className="submit-button">{sumbitButtom}</div>
       </Form>
     </div>
     );
@@ -169,4 +218,4 @@ class SignUp extends React.Component {
 
 }
 
-export default SignUp
+export default withRouter(SignUp)

@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from "react-router";
 
 class AdminB extends React.Component {
 
@@ -15,4 +16,4 @@ class AdminB extends React.Component {
   }
 }
 
-export default AdminB
+export default withRouter(AdminB)

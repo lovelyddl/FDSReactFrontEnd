@@ -10,7 +10,7 @@ import CustomerB from '../components/pages/User/blackboard/customerB'
 import DeliveryManB from '../components/pages/User/blackboard/deliveryManB'
 import ManagerB from '../components/pages/User/blackboard/managerB'
 import AdminB from '../components/pages/User/blackboard/adminB'
-import Profile from './pages/User/profile';
+// import Profile from './pages/User/profile';
 import Cart from './pages/User/cart';
 import Loading from './loading';
 import Unauthorization from './unauthorization';
@@ -50,8 +50,6 @@ class Layout extends React.Component {
     })
   }
 
-
-
   logOut = () => {
     let res = logout()
     res.then((response) => {
@@ -63,7 +61,7 @@ class Layout extends React.Component {
       console.log('failed to log out')
     })
     this.props.addUser({
-      userId: "",
+      userName: "",
       password: "",
       role: ""
     });
@@ -83,14 +81,14 @@ class Layout extends React.Component {
       }
       return checkRole[userInfo.role];
     } else {
-      return <Redirect to="/unauthorization"/>;
+      return <Unauthorization/>;
     }
   }
 
   render() {
     const { userInfo } = this.props;
     let bb = checkPermission(userInfo).isLog ? <div className="item"><Link to={`/blackboard/${userInfo.role}`} replace>Blackboard</Link></div> : null;
-    let profile = checkPermission(userInfo).isLog ? <div className="item"><Link to="/Profile" replace><i className="user circle icon"></i> <div className="user-icon-word"> {userInfo.userName}</div></Link></div> : null;
+    let profile = checkPermission(userInfo).isLog ? <div className="item"><Link to="/profile" replace><i className="user circle icon"></i> <div className="user-icon-word"> {userInfo.userName}</div></Link></div> : null;
     let cart = checkPermission(userInfo).isCustomer ? <div className="item"><Link to="/cart" replace><i className="shopping cart icon"></i></Link></div> : null;
     let log = checkPermission(userInfo).isLog ? <div className="item"><div onClick={this.logOut} className="ui button red">Log out</div></div> : <div className="item"><Link to="/login" className="ui button" replace>Log in</Link></div>;
     let sign = checkPermission(userInfo).isLog ? null : <div className="item"><Link to="/signup" className="ui primary button" replace>Sign Up</Link></div>;
@@ -121,8 +119,8 @@ class Layout extends React.Component {
             <Route path="/unauthorization" component={Unauthorization} />
             <Route path="/cart" render={() => (checkPermission(userInfo).isCustomer ? (<Cart/>) : (<Redirect to="/unauthorization"/>)) }/>
             <Route exact path="/blackboard" render={() => ( checkPermission(userInfo).isLog ? (<Redirect to={`/blackboard/${userInfo.role}`}/>) : (<Redirect to="/unauthorization"/>))}/>
-            <Route path={`/blackboard/${userInfo.role}`} render={this.renderBlackboard } />
-            <Route path="/profile" render={() => (checkPermission(userInfo).isLog ? (<Profile/>) : (<Redirect to="/unauthorization"/>)) } />
+            <Route path={`/blackboard/${userInfo.role}`} render={this.renderBlackboard} />
+            <Route path="/profile" render={() => (checkPermission(userInfo).isLog ? (<SignUp userName={userInfo.userName} role={userInfo.role}/>) : (<Redirect to="/unauthorization"/>)) } />
           </div>
         </div>
     );
@@ -132,10 +130,9 @@ class Layout extends React.Component {
 
 Layout.propTypes = {
   userInfo: PropTypes.shape({
-    userId: PropTypes.string,
+    userName: PropTypes.string,
     password: PropTypes.string,
-    role: PropTypes.string,
-    userName: PropTypes.string
+    role: PropTypes.string
   }),
   addUser: PropTypes.func.isRequired
 }

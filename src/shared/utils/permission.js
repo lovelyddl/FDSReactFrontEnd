@@ -1,12 +1,12 @@
 
-// check user role by giving userinfo
-export const checkPermission = (userinfo) => {
-  if (userinfo !== undefined && userinfo.userId !== "" && userinfo.password !== "") {
+// check user role by giving userInfo
+export const checkPermission = (userInfo) => {
+  if (userInfo !== undefined && userInfo.userName !== "" && userInfo.password !== "") {
     return {
-      isCustomer: userinfo.role === 'customer',
-      isDeliveryMan: userinfo.role === 'deliveryMan',
-      isManager: userinfo.role === 'manager',
-      isAdmin: userinfo.role === 'admin',
+      isCustomer: userInfo.role === 'customer',
+      isDeliveryMan: userInfo.role === 'deliveryMan',
+      isManager: userInfo.role === 'manager',
+      isAdmin: userInfo.role === 'admin',
       isLog: true
     }
   } else {

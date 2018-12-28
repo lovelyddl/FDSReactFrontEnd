@@ -5,9 +5,8 @@ import { ADD_USER } from "./actionTypes";
 export const addUser = (content) => ({
   type: ADD_USER,
   payload: {
-    userId: content.userId,
+    userName: content.userName,
     password: content.password,
-    role: content.role,
-    userName: content.userName
+    role: content.role
   }
 });

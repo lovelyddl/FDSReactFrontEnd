@@ -34,3 +34,25 @@ export const signup = (userName, phone, email, password, role) => {
     role
   })
 }
+
+export const getUserDetail = (userName, role) => {
+  let url = baseURL + "/users/detail";
+  return Axios.get(url, {
+    params: {
+      userName,
+      role
+    }
+  })
+}
+
+export const editUser = (userId, userName, phone, email, password, role) => {
+  let url = baseURL + "/users/editUser";
+  return Axios.post(url, {
+    userId,
+    userName,
+    phone,
+    email,
+    password,
+    role
+  })
+}

@@ -1,6 +1,14 @@
 import React from 'react'
+import { withRouter } from "react-router";
 
 class DeliveryManB extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+
+    }
+    // console.log(props)
+  }
 
   componentDidMount() {
     window.scrollTo(0, 0)
@@ -15,4 +23,4 @@ class DeliveryManB extends React.Component {
   }
 }
 
-export default DeliveryManB
+export default withRouter(DeliveryManB)

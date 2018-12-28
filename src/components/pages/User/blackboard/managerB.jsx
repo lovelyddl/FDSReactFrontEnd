@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from "react-router";
 
 class ManagerB extends React.Component {
 
@@ -15,4 +16,4 @@ class ManagerB extends React.Component {
   }
 }
 
-export default ManagerB
+export default withRouter(ManagerB)
