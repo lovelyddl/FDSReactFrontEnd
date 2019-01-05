@@ -13,3 +13,12 @@ export const queryRestList = (listType, searchKey) => {
     }
   });
 }
+
+export const resDetail = (resid) => {
+  let url = baseURL + "/rest/detail";
+  return Axios.get(url, {
+    params: {
+      resid
+    }
+  });
+}

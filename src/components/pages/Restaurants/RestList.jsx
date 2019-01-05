@@ -58,7 +58,7 @@ class RestList extends React.Component {
     this.props.history.push({
       pathname: '/rest/detail',
       state: {
-        restId: id
+        resid: id
       }
     })      
   }
