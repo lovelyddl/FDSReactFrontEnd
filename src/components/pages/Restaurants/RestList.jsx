@@ -44,10 +44,14 @@ class RestList extends React.Component {
     } else {
       try {
         let res = await queryRestList(this.state.searchType, this.state.searchQuery);
-        let tableData = res.data.data;
-        this.setState({
-          restList: tableData
-        })
+        if (res.data.code === 0) {
+          let tableData = res.data.data;
+          this.setState({
+            restList: tableData
+          })
+        } else {
+          console.log(res.data.error);
+        }
       } catch (error) {
         console.log(error)
       }
@@ -56,10 +60,7 @@ class RestList extends React.Component {
 
   goDetail = (id) => {
     this.props.history.push({
-      pathname: '/rest/detail',
-      state: {
-        resid: id
-      }
+      pathname: `/rest/detail/${id}`
     })      
   }
 

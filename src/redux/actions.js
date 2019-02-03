@@ -1,5 +1,5 @@
 // define all actions we want to manipulate
-import { ADD_USER } from "./actionTypes";
+import { ADD_USER, EDIT_CART } from "./actionTypes";
 
 // add user log in information into the store
 export const addUser = (content) => ({
@@ -9,4 +9,9 @@ export const addUser = (content) => ({
     password: content.password,
     role: content.role
   }
+});
+
+export const editCart = (content) => ({
+  type: EDIT_CART,
+  payload: content
 });
